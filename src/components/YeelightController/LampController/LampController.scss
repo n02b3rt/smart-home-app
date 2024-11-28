@@ -1,0 +1,40 @@
+.YeelightController {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.LampController {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 150px;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.LampController--on {
+  background-color: #ffeb3b;
+}
+
+.LampController--off {
+  background-color: #616161;
+}
+
+.LampController__icon {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.LampController__name {
+  font-size: 14px;
+  text-align: center;
+  color: #000;
+}

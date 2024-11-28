@@ -1,9 +1,9 @@
-import Main from './components/Main/Main'
+import YeelightController from '@/components/YeelightController/YeelightController';
 
 export default function Home() {
   return (
     <main>
-        <Main />
+        <YeelightController />
     </main>
   );
 }
