@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import LampController from './LampController/LampController';
+import './YeelightController.scss'
 
 // Lista lamp z przypisanymi ikonami
 const LAMPS = [
