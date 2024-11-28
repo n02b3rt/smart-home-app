@@ -14,7 +14,6 @@ const LampController = ({ lamp, isOn, toggleLamp, loading }) => {
                 alt={`${lamp.name} icon`}
                 className="LampController__icon"
             />
-            <div className="LampController__name">{lamp.name}</div>
         </div>
     );
 };
