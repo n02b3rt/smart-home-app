@@ -1,17 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import useWeatherData from '@/hooks/useWeatherData';
+import { useWeather } from '@/context/WeatherContext';
 import SensorData from './SensorData/SensorData';
 import WeatherWidget from "./WeatherWidget/WeatherWidget";
 
 import './SensorAndWeatherOverview.scss';
 
 export default function SensorAndWeatherOverview({ city = 'Rzeszów' }) {
-    const { weather, loading, error } = useWeatherData(city);
+    const { weather, error } = useWeather();
     const [description, setDescription] = useState('---'); // Opis pogody do wyświetlenia
 
-    // Aktualizacja opisu pogody
     useEffect(() => {
         if (weather?.weather?.[0]?.description) {
             setDescription(weather.weather[0].description);

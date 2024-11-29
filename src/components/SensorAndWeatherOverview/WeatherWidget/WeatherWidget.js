@@ -1,40 +1,46 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import useWeatherData from '@/hooks/useWeatherData';
-import './WeatherWidget.scss'
+import React, { useEffect, useState } from 'react';
+import { useWeather } from '@/context/WeatherContext'; // Pobieramy dane z kontekstu
+import './WeatherWidget.scss';
 
-const WeatherWidget = ({ city = 'Rzeszów' }) => {
-    const { weather, loading, error } = useWeatherData(city);
-    const [displayData, setDisplayData] = useState(null); // Dane do wyświetlenia
+const WeatherWidget = () => {
+    const { weather, loading, error } = useWeather(); // Dane z kontekstu
+    const [displayData, setDisplayData] = useState(null);
 
-    // Aktualizacja danych do wyświetlenia
+    // Aktualizacja danych do wyświetlenia, zaokrąglając temperaturę
     useEffect(() => {
         if (weather) {
-            // Kopia danych z zaokrągloną temperaturą
-            const roundedWeather = {
+            setDisplayData({
                 ...weather,
                 main: {
                     ...weather.main,
-                    temp: Math.round(weather.main.temp), // Zaokrąglona temperatura
+                    temp: Math.round(weather.main.temp), // Zaokrąglenie temperatury
                 },
-            };
-
-            setDisplayData(roundedWeather); // Ustaw zaokrąglone dane
+            });
         }
     }, [weather]);
 
-    // Wyświetlanie błędu
-    if (error) return <div>Błąd: {error}</div>;
+    // Obsługa błędu
+    if (error) {
+        return <div className="WeatherWidget WeatherWidget--error">Błąd: {error}</div>;
+    }
 
-    // Wyświetlanie w trakcie pierwszego ładowania
-    if (loading && !displayData) return <div>Ładowanie pogody...</div>;
+    // Obsługa ładowania danych
+    if (loading && !displayData) {
+        return <div className="WeatherWidget WeatherWidget--loading">Ładowanie pogody...</div>;
+    }
 
+    // Wyświetlanie danych
     return (
         <div className="WeatherWidget">
-            <p className='WeatherWidget__title'>na zewnątrz</p>
-            <p className='WeatherWidget__temperature'>{displayData?.main?.temp || '---'}°C</p>
-            <p className='WeatherWidget__humidity'>{displayData?.main?.humidity || '---'}%</p>
+            <p className="WeatherWidget__title">na zewnątrz</p>
+            <p className="WeatherWidget__temperature">
+                {displayData?.main?.temp || '---'}°C
+            </p>
+            <p className="WeatherWidget__humidity">
+                {displayData?.main?.humidity || '---'}%
+            </p>
             {loading && <p>Odświeżanie danych...</p>}
         </div>
     );
