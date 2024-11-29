@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const useWeatherData = (city = 'Rzeszów') => {
+const WeatherContext = createContext();
+
+export const WeatherProvider = ({ city = 'Rzeszów', children }) => {
     const [weather, setWeather] = useState(null); // Aktualne dane pogodowe
     const [loading, setLoading] = useState(true); // Kontroluje stan ładowania
     const [error, setError] = useState(null); // Obsługuje błędy
@@ -35,7 +37,12 @@ const useWeatherData = (city = 'Rzeszów') => {
         return () => clearInterval(interval);
     }, [city]);
 
-    return { weather, loading, error };
+    return (
+        <WeatherContext.Provider value={{ weather, loading, error }}>
+            {children}
+        </WeatherContext.Provider>
+    );
 };
 
-export default useWeatherData;
+// Custom hook do pobierania danych z kontekstu
+export const useWeather = () => useContext(WeatherContext);
