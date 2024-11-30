@@ -21,10 +21,16 @@ export default function ScheduleList({ schedule, setSchedule }) {
         }
     };
 
+    // Sortowanie zajęć według dnia tygodnia
+    const daysOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    const sortedSchedule = [...schedule].sort(
+        (a, b) => daysOrder.indexOf(a.day) - daysOrder.indexOf(b.day)
+    );
+
     return (
         <ul className="ScheduleList">
-            {schedule.length > 0 ? (
-                schedule.map((entry, index) => (
+            {sortedSchedule.length > 0 ? (
+                sortedSchedule.map((entry, index) => (
                     <li key={index} className="ScheduleList__item">
                         <span>
                             {entry.day}, {entry.startTime} - {entry.endTime},{" "}
