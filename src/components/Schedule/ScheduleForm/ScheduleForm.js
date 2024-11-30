@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import './ScheduleForm.scss'
 
 export default function ScheduleForm({ schedule, setSchedule, showNotification }) {
     const [form, setForm] = useState({

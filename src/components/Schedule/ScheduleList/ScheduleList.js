@@ -1,6 +1,16 @@
 "use client";
 
 import React from "react";
+import './ScheduleList.scss'
+
+// Indeksy dni tygodnia dla sortowania
+const dayOrder = {
+    Monday: 1,
+    Tuesday: 2,
+    Wednesday: 3,
+    Thursday: 4,
+    Friday: 5,
+};
 
 export default function ScheduleList({ schedule, setSchedule }) {
     // Usuwanie zajęć
@@ -21,10 +31,17 @@ export default function ScheduleList({ schedule, setSchedule }) {
         }
     };
 
+    // Sortowanie zajęć według dni tygodnia
+    const sortedSchedule = [...schedule].sort((a, b) => {
+        const dayA = dayOrder[a.day] || 0; // Domyślny indeks dla nieznanego dnia
+        const dayB = dayOrder[b.day] || 0;
+        return dayA - dayB;
+    });
+
     return (
         <ul className="ScheduleList">
-            {schedule.length > 0 ? (
-                schedule.map((entry, index) => (
+            {sortedSchedule.length > 0 ? (
+                sortedSchedule.map((entry, index) => (
                     <li key={index} className="ScheduleList__item">
                         <span>
                             {entry.day}, {entry.startTime} - {entry.endTime}, {entry.subject}, Typ:{" "}
