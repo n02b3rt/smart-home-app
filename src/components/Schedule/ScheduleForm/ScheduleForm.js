@@ -1,68 +1,50 @@
 "use client";
 
 import React, { useState } from "react";
-import './ScheduleForm.scss'
+import "./ScheduleForm.scss";
 
-export default function ScheduleForm({ schedule, setSchedule, showNotification }) {
+export default function ScheduleForm({ onAddClass }) {
     const [form, setForm] = useState({
         day: "Monday",
         startTime: "",
         endTime: "",
         subject: "",
         type: "Lecture",
+        weekType: "A",
     });
 
-    // Obsługa zmian w formularzu
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setForm({ ...form, [name]: value });
+        setForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    // Walidacja formularza
-    const validateForm = () => {
-        const { day, startTime, endTime, subject, type } = form;
-        return day && startTime && endTime && subject && type;
-    };
-
-    // Dodawanie zajęć
-    const handleAddClass = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!validateForm()) {
-            showNotification("Uzupełnij wszystkie pola przed dodaniem zajęć.", "error");
+        // Walidacja formularza
+        const { day, startTime, endTime, subject, type, weekType } = form;
+        if (!day || !startTime || !endTime || !subject || !type || !weekType) {
+            console.error("Uzupełnij wszystkie pola formularza");
             return;
         }
 
         try {
-            const response = await fetch("/api/schedule", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
+            await onAddClass(form); // Wywołanie funkcji przekazanej z komponentu nadrzędnego
+            setForm({
+                day: "Monday",
+                startTime: "",
+                endTime: "",
+                subject: "",
+                type: "Lecture",
+                weekType: "A",
             });
-
-            if (response.ok) {
-                setSchedule((prev) => [...prev, form]);
-                showNotification(`Dodano zajęcia: ${form.subject}`, "success");
-                setForm({
-                    day: "Monday",
-                    startTime: "",
-                    endTime: "",
-                    subject: "",
-                    type: "Lecture",
-                });
-            } else {
-                const error = await response.json();
-                console.error("Błąd podczas dodawania zajęć:", error.error);
-                showNotification("Błąd podczas dodawania zajęć.", "error");
-            }
         } catch (error) {
             console.error("Błąd podczas dodawania zajęć:", error);
-            showNotification("Błąd podczas dodawania zajęć.", "error");
         }
     };
 
     return (
-        <form className="ScheduleForm" onSubmit={handleAddClass}>
+        <form className="ScheduleForm" onSubmit={handleSubmit}>
             <label>
                 Dzień:
                 <select name="day" value={form.day} onChange={handleInputChange}>
@@ -107,6 +89,14 @@ export default function ScheduleForm({ schedule, setSchedule, showNotification }
                     <option value="Lab">Laboratorium</option>
                     <option value="Seminar">Seminarium</option>
                     <option value="Exercise">Ćwiczenia</option>
+                </select>
+            </label>
+            <label>
+                Tydzień:
+                <select name="weekType" value={form.weekType} onChange={handleInputChange}>
+                    <option value="Both">Oba tygodnie</option>
+                    <option value="A">Tydzień A</option>
+                    <option value="B">Tydzień B</option>
                 </select>
             </label>
             <button type="submit">Dodaj zajęcia</button>

@@ -1,19 +1,9 @@
 "use client";
 
 import React from "react";
-import './ScheduleList.scss'
-
-// Indeksy dni tygodnia dla sortowania
-const dayOrder = {
-    Monday: 1,
-    Tuesday: 2,
-    Wednesday: 3,
-    Thursday: 4,
-    Friday: 5,
-};
+import "./ScheduleList.scss";
 
 export default function ScheduleList({ schedule, setSchedule }) {
-    // Usuwanie zajęć
     const handleRemoveClass = async (index) => {
         try {
             const response = await fetch(`/api/schedule?index=${index}`, {
@@ -31,21 +21,14 @@ export default function ScheduleList({ schedule, setSchedule }) {
         }
     };
 
-    // Sortowanie zajęć według dni tygodnia
-    const sortedSchedule = [...schedule].sort((a, b) => {
-        const dayA = dayOrder[a.day] || 0; // Domyślny indeks dla nieznanego dnia
-        const dayB = dayOrder[b.day] || 0;
-        return dayA - dayB;
-    });
-
     return (
         <ul className="ScheduleList">
-            {sortedSchedule.length > 0 ? (
-                sortedSchedule.map((entry, index) => (
+            {schedule.length > 0 ? (
+                schedule.map((entry, index) => (
                     <li key={index} className="ScheduleList__item">
                         <span>
-                            {entry.day}, {entry.startTime} - {entry.endTime}, {entry.subject}, Typ:{" "}
-                            {entry.type}
+                            {entry.day}, {entry.startTime} - {entry.endTime},{" "}
+                            {entry.subject}, Typ: {entry.type}, Tydzień: {entry.weekType}
                         </span>
                         <button onClick={() => handleRemoveClass(index)}>Usuń</button>
                     </li>
