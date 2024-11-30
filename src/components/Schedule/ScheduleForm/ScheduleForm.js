@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-export default function ScheduleForm({ schedule, setSchedule }) {
+export default function ScheduleForm({ schedule, setSchedule, showNotification }) {
     const [form, setForm] = useState({
         day: "Monday",
         startTime: "",
@@ -17,9 +17,21 @@ export default function ScheduleForm({ schedule, setSchedule }) {
         setForm({ ...form, [name]: value });
     };
 
+    // Walidacja formularza
+    const validateForm = () => {
+        const { day, startTime, endTime, subject, type } = form;
+        return day && startTime && endTime && subject && type;
+    };
+
     // Dodawanie zajęć
     const handleAddClass = async (e) => {
         e.preventDefault();
+
+        if (!validateForm()) {
+            showNotification("Uzupełnij wszystkie pola przed dodaniem zajęć.", "error");
+            return;
+        }
+
         try {
             const response = await fetch("/api/schedule", {
                 method: "POST",
@@ -29,6 +41,7 @@ export default function ScheduleForm({ schedule, setSchedule }) {
 
             if (response.ok) {
                 setSchedule((prev) => [...prev, form]);
+                showNotification(`Dodano zajęcia: ${form.subject}`, "success");
                 setForm({
                     day: "Monday",
                     startTime: "",
@@ -39,9 +52,11 @@ export default function ScheduleForm({ schedule, setSchedule }) {
             } else {
                 const error = await response.json();
                 console.error("Błąd podczas dodawania zajęć:", error.error);
+                showNotification("Błąd podczas dodawania zajęć.", "error");
             }
         } catch (error) {
             console.error("Błąd podczas dodawania zajęć:", error);
+            showNotification("Błąd podczas dodawania zajęć.", "error");
         }
     };
 

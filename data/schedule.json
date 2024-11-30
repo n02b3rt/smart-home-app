@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "day": "Monday",
+    "startTime": "09:00",
+    "endTime": "10:00",
+    "subject": "Algorytmy i struktury danych",
+    "type": "Lecture"
+  },
+  {
+    "day": "Monday",
+    "startTime": "10:00",
+    "endTime": "11:00",
+    "subject": "Algorytmy i struktury danych",
+    "type": "Lecture"
+  },
+  {
+    "day": "Monday",
+    "startTime": "12:00",
+    "endTime": "13:00",
+    "subject": "Algorytmy i struktury danych",
+    "type": "Lecture"
+  }
+]
