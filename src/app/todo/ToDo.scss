@@ -1,5 +1,5 @@
 .ToDoPage {
-  max-width: 600px;
+  max-width: 1024px;
   margin: 0 auto;
   padding: 20px;
 
@@ -17,6 +17,9 @@
 
   .ToDoPage__list {
     list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 1rem;
     padding: 0;
 
     .ToDoPage__item {
@@ -31,18 +34,20 @@
   }
 }
 
-.ToDoLayout__notification {
-  background-color: #ffeeba;
-  color: #856404;
-  padding: 10px;
-  text-align: center;
-  border: 1px solid #ffeeba;
-  border-radius: 4px;
-  margin-bottom: 20px;
+.ToDoLayout{
+  &__notification {
+    background-color: #ffeeba;
+    color: #856404;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ffeeba;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  &__error {
+    color: #d9534f;
+    text-align: center;
+    margin-top: 10px;
+  }
 }
 
-.ToDoLayout__error {
-  color: #d9534f;
-  text-align: center;
-  margin-top: 10px;
-}

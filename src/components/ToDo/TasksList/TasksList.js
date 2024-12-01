@@ -1,48 +1,50 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
+import Task from "./Task/Task";
+import "./TasksList.scss";
 
-export default function TasksList({ onError }) {
-    const [taskLists, setTaskLists] = useState([]);
+export default function TasksList({ listTitle, tasks }) {
+    // Funkcja sortująca
+    const sortTasks = (tasks) => {
+        return [...tasks].sort((a, b) => {
+            // Zadania zakończone na samym dole
+            if (a.completed && !b.completed) return 1;
+            if (!a.completed && b.completed) return -1;
 
-    const fetchTasksFromFile = async () => {
-        try {
-            const response = await fetch("/api/googleTasks/getTasksFromFile");
-            if (!response.ok) {
-                throw new Error("Nie udało się odczytać zadań z pliku.");
+            // Zadania bez daty na dole
+            if (!a.due && b.due) return 1;
+            if (a.due && !b.due) return -1;
+
+            // Sortuj po dacie (wcześniejsze daty na górze)
+            if (a.due && b.due) {
+                const dateA = new Date(a.due);
+                const dateB = new Date(b.due);
+                return dateA - dateB;
             }
-            const data = await response.json();
-            setTaskLists(data);
-        } catch (err) {
-            console.error("Błąd podczas odczytu zadań z pliku:", err);
-            onError("Nie udało się odczytać zadań.");
-        }
+
+            // Jeśli oba są bez daty, zachowaj porządek
+            return 0;
+        });
     };
 
-    useEffect(() => {
-        fetchTasksFromFile();
-    }, []);
-
-    if (!taskLists || taskLists.length === 0) {
-        return <p>Brak zadań do wyświetlenia.</p>;
-    }
+    // Posortowane zadania
+    const sortedTasks = sortTasks(tasks);
 
     return (
-        <div className="ToDoPage__list">
-            {taskLists.map((list) => (
-                <div key={list.listId} className="ToDoPage__list-item">
-                    <h3>{list.listTitle}</h3>
-                    <ul>
-                        {list.tasks.map((task, index) => (
-                            <li key={index}>
-                                <p><strong>Tytuł:</strong> {task.title}</p>
-                                <p><strong>Opis:</strong> {task.notes || "Brak"}</p>
-                                <p><strong>Termin:</strong> {task.due || "Brak"}</p>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            ))}
+        <div className="List">
+            <h3>{listTitle}</h3>
+            <ul>
+                {sortedTasks.map((task, index) => (
+                    <Task
+                        key={index}
+                        title={task.title}
+                        notes={task.notes}
+                        due={task.due}
+                        completed={task.completed}
+                    />
+                ))}
+            </ul>
         </div>
     );
 }

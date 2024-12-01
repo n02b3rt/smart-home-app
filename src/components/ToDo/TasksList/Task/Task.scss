@@ -1,0 +1,59 @@
+.Task {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+
+  &__summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    font-weight: bold;
+    flex: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__due {
+    flex: 1;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #ffffff;
+  }
+
+  &__status {
+    flex: 1;
+    text-align: right;
+    font-weight: bold;
+
+    &.completed {
+      color: #155724;
+    }
+
+    &.incomplete {
+      color: #721c24;
+    }
+  }
+
+  &__details {
+    margin-top: 0.5rem;
+    padding: 1rem;
+    font-size: 0.9rem;
+    background: #404040;
+    color: #ffffff;
+  }
+
+  &.completed {
+    background-color: #d4edda;
+  }
+
+  &.incomplete {
+    background-color: #f8d7da;
+  }
+}

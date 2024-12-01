@@ -8,7 +8,7 @@ export async function GET(req) {
         const fileData = await fs.readFile(filePath, "utf8");
         const tasks = JSON.parse(fileData);
 
-        console.log("Tasks fetched from file:", tasks);
+        // console.log("Tasks fetched from file:", tasks);
         return NextResponse.json(tasks);
     } catch (error) {
         console.error("Error reading tasks from file:", error);
