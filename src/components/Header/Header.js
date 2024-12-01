@@ -38,6 +38,13 @@ export default function Header() {
                         className="Header__icon"
                     />
                 </Link>
+                <Link href="/todo">
+                    <img
+                        src={`/icons/check_circle.svg`}
+                        alt={`home icon`}
+                        className="Header__icon"
+                    />
+                </Link>
                 <Link href="/university">
                 <img
                         src={`/icons/school.svg`}
