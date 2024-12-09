@@ -1,0 +1,37 @@
+@import '../../../styles/variable';
+
+.sectionContainer{
+  margin: 85px 35px;
+  padding: 0 20px;
+  width: $rp-pi-width;
+}
+.planContainer {
+  margin-top: 20px;
+}
+
+.activity {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease;
+}
+
+.current {
+  padding: 30px;
+  font-size: 32px;
+  background-color: #d4edda; // Jasnozielone tło dla aktualnej aktywności
+  border-color: #155724;
+  color: #155724;
+}
+
+.past {
+  background-color: #6c757d; // Ciemnoszare tło dla przeszłych aktywności
+  color: #f8f9fa;
+}
+
+.future {
+  background-color: #e2e6ea; // Jasnoszare tło dla przyszłych aktywności
+  color: #495057;
+}

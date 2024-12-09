@@ -38,7 +38,7 @@ export default function Header() {
                         className="Header__icon"
                     />
                 </Link>
-                <Link href="/day-planner">
+                <Link href="/day-planner/show">
                     <img
                         src={`/icons/calendar.svg`}
                         alt={`home icon`}

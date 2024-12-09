@@ -1,11 +1,58 @@
 import { filterTasksByDate, filterScheduleByDate } from "./filterData";
 import tasksData from "/data/tasks.json";
 
+// Funkcja do znalezienia poprzedniego dnia
+const getPreviousDay = (date) => {
+    const currentDate = new Date(date);
+
+    if (isNaN(currentDate.getTime())) {
+        return null;
+    }
+
+    currentDate.setDate(currentDate.getDate() - 1); // Odejmujemy jeden dzień
+    return currentDate.toISOString().split("T")[0];
+};
+
+// Funkcja do pobrania planu dnia z pliku dayPlan.json za pomocą API
+const fetchDayPlans = async () => {
+    try {
+        const response = await fetch("/api/planner/getDayPlans");
+        if (!response.ok) {
+            throw new Error("Nie udało się pobrać planów dnia");
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Błąd podczas pobierania planów dnia:", error);
+        return [];
+    }
+};
+
+// Funkcja do znalezienia godziny zakończenia snu z poprzedniego dnia
+const getPreviousDayEndTime = async (date) => {
+    const previousDay = getPreviousDay(date);
+    if (!previousDay) {
+        return null;
+    }
+
+    const dayPlans = await fetchDayPlans();
+
+    const previousDayPlan = dayPlans.find((plan) => plan.day === previousDay);
+    if (!previousDayPlan) {
+        return null;
+    }
+
+    const sleepActivity = previousDayPlan.schedule.find((activity) =>
+        activity.activity && activity.activity.toLowerCase().includes("sen")
+    );
+
+    return sleepActivity ? sleepActivity.closing_time : null;
+};
+
 // Funkcja do znalezienia następnego dnia
 const getNextDay = (date) => {
     const currentDate = new Date(date);
 
-    // Sprawdzenie, czy data jest prawidłowa
     if (isNaN(currentDate.getTime())) {
         return null;
     }
@@ -14,7 +61,7 @@ const getNextDay = (date) => {
     return currentDate.toISOString().split("T")[0];
 };
 
-// Funkcja do znalezienia najwcześniejszej godziny rozpoczęcia zajęć
+// Funkcja do znalezienia najwcześniejszej godziny rozpoczęcia zajęć następnego dnia
 const getNextDayStartTime = (date) => {
     const nextDay = getNextDay(date);
 
@@ -44,7 +91,7 @@ const getExtraTasks = () => {
 };
 
 // Główna funkcja generująca prompt
-export const generatePrompt = (date, hasBreakfast, isLazyDay) => {
+export const generatePrompt = async (date, hasBreakfast, isLazyDay) => {
     if (!date) {
         return "Proszę podać prawidłową datę.";
     }
@@ -52,6 +99,7 @@ export const generatePrompt = (date, hasBreakfast, isLazyDay) => {
     const tasksForDate = filterTasksByDate(date);
     const scheduleForDate = filterScheduleByDate(date);
     const nextDayStartInfo = getNextDayStartTime(date);
+    const previousDayEndTime = await getPreviousDayEndTime(date);
 
     const extraTasks = getExtraTasks();
     const extraTasksWithDueDate = extraTasks.filter((task) => task.due && task.due !== "Brak terminu");
@@ -65,6 +113,10 @@ export const generatePrompt = (date, hasBreakfast, isLazyDay) => {
         ? "Uwzględnij więcej przerw i odpoczynku w ciągu dnia, aby zredukować stres."
         : "";
 
+    const startDayInfo = previousDayEndTime
+        ? `Zacznij dzień o ${previousDayEndTime}, zgodnie z zakończeniem snu z poprzedniego dnia.`
+        : "Domyślna godzina rozpoczęcia dnia: 07:30.";
+
     const extraTasksInfo = `
 Jeśli masz dużo wolnego czasu, oto sugerowane zadania do wykonania z wyprzedzeniem:
 
@@ -77,6 +129,8 @@ ${extraTasksWithoutDueDate.length > 0 ? extraTasksWithoutDueDate.map((task) => `
 
     const prompt = `
 Na podstawie poniższych danych wygeneruj plan dnia na ${date}.
+
+${startDayInfo}
 
 Plan lekcji:
 ${scheduleForDate.length > 0 ? scheduleForDate.map((lesson) => `${lesson.startTime} - ${lesson.endTime}: ${lesson.subject} (${lesson.type})`).join("\n") : "Brak zajęć na uczelni."}
@@ -104,6 +158,6 @@ Zwróć dane w formacie JSON. Przykład:
   ]
 }
 `;
-
+console.log(`prompt: ${prompt}`)
     return prompt;
 };
