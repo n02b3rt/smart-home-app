@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import SpotifyPlayer from "@/components/SpotifyPlayer/SpotifyPlayer";
 import YeelightController from "@/components/YeelightController/YeelightController";
 import WeatherWidget from "@/components/WeatherWidget/WeatherWidget";
+import SensorData from "@/components/SensorData/SensorData";
 import "@/styles/homePage.scss";
 
 export default function Home() {
@@ -42,7 +43,7 @@ export default function Home() {
                 obsluga lampy
             </div>
             <div className="home-page__temperatura home-page__temperatura--sensor">
-                    Sensor
+                <SensorData/>
             </div>
             <div className="home-page__temperatura home-page__temperatura--api">
                 <WeatherWidget/>
