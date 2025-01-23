@@ -1,0 +1,48 @@
+$font-size: 3.5rem;
+.WeatherWidget{
+  height: 100%;
+  width: 100%;
+  color: #0984e3;
+  border-bottom: 7px solid #0984e3;
+
+
+  &__temperature{
+    font-size: $font-size;
+  }
+  &__humidity{
+    font-size: $font-size/2.5;
+  }
+  &__overlay{
+    padding: 1rem;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.75);
+  }
+  &__icon{
+    $icon-size: 3.5rem;
+    width: $icon-size;
+    height: $icon-size;
+    fill: #0984e3;
+  }
+  &--default{
+    background: url('../../../public/weather/pexels-brett-sayles-1431822.webp');
+  }
+  &--clear{
+    background: url("../../../public/weather/pexels-asphotograpy-96622.webp");
+  }
+  &--clouds{
+    background: url("../../../public/weather/pexels-pixabay-53594.webp");
+  }
+  &--rain{
+    background: url("../../../public/weather/pexels-lum3n-44775-1028600.webp");
+  }
+  &--drizzle{
+    background: url("../../../public/weather/pexels-dumitru-b-742240889-30351392.webp");
+  }
+  &--thunderstorm{
+    background: url("../../../public/weather/pexels-vyacheslav-bobin-105199946-9751579.webp");
+  }
+  &--snow{
+    background: url("../../../public/weather/pexels-adam-lukac-254247-773953.webp");
+  }
+}

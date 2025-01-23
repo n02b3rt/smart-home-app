@@ -1,0 +1,28 @@
+.SensorData{
+  width: 100%;
+  height: 100%;
+  background: url("../../../public/photos/pexels-pixabay-271618.webp") no-repeat;
+  background-size: cover;
+  border-bottom: 7px solid #fdcb6e;
+  &__overlay{
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    background: rgba(white, 0.85);
+    color: #414141;
+  }
+  &__icon{
+    $icon-size: 3.5rem;
+    width: $icon-size;
+    height: $icon-size;
+    fill: #414141;
+  }
+  //width: $component-width;
+  &__title{
+    //font-size: $title-font-size;
+  }
+  &__temperature{font-size: 3.5rem}
+  &__humidity{
+    //font-size: $humidity-font-size;
+  }
+}
