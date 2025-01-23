@@ -30,9 +30,8 @@ export const WeatherProvider = ({ city = 'Rzeszów', children }) => {
 
     useEffect(() => {
         fetchWeather();
-
         // Odświeżanie co 15 minut (900 000 ms)
-        const interval = setInterval(fetchWeather, 900000);
+        const interval = setInterval(fetchWeather, 1800000);
 
         return () => clearInterval(interval);
     }, [city]);

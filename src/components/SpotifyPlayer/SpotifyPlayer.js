@@ -126,7 +126,7 @@ const SpotifyPlayer = () => {
     useEffect(() => {
         if (session) {
             fetchCurrentTrack(); // Odśwież na start
-            fetchUserProfile()
+            session ? fetchUserProfile() : null;
             // Automatyczne odświeżanie co 5 sekund
             const interval = setInterval(() => {
                 fetchCurrentTrack();
@@ -157,7 +157,7 @@ const SpotifyPlayer = () => {
     return (
         <div className="spotifyPlayer">
             {
-                session ?
+                userProfile ?
                     <p className="spotifyPlayer__user">
                         <SpotifyIcon className="spotifyPlayer__user-icon" />
                         {userProfile.display_name}
