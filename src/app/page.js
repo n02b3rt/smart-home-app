@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import SpotifyPlayer from "@/components/SpotifyPlayer/SpotifyPlayer";
 import YeelightController from "@/components/YeelightController/YeelightController";
 import SensorAndWeatherOverview from "@/components/SensorAndWeatherOverview/SensorAndWeatherOverview";
 import "@/styles/homePage.scss";
@@ -34,8 +35,20 @@ export default function Home() {
 
     return (
         <main className="home-page">
-            <SensorAndWeatherOverview />
-            <YeelightController />
+            <div className="home-page__spotify">
+                <SpotifyPlayer/>
+            </div>
+            <div className="home-page__bedside-lamp">
+                obsluga lampy
+            </div>
+            <div className="home-page__temperatura home-page__temperatura--sensor">
+                temperatura
+            </div>
+            <div className="home-page__temperatura home-page__temperatura--api">
+                temperatura
+            </div>
+            {/*<SensorAndWeatherOverview />*/}
+            {/*<YeelightController />*/}
         </main>
     );
 }
