@@ -1,9 +1,10 @@
 import "../styles/globals.scss";
 import Header from "../components/Header/Header";
+import ClientSessionProvider from '@/components/ClientSessionProvider/ClientSessionProvider';
 import { WeatherProvider } from "@/context/WeatherContext";
 
 export const metadata = {
-    title: 'Smart Home Application'
+    title: 'Smart Home Application',
 };
 
 export default function RootLayout({ children }) {
@@ -12,7 +13,9 @@ export default function RootLayout({ children }) {
       <body>
         <Header/>
         <WeatherProvider city="Rzeszów">
-            {children}
+            <ClientSessionProvider>
+                {children}
+            </ClientSessionProvider>
         </WeatherProvider>
       </body>
     </html>

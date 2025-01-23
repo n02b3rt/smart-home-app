@@ -1,0 +1,62 @@
+.spotifyPlayer{
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding-top: 3rem;
+  color: white;
+  font-weight: 200;
+
+  &__user{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top:0;
+    left:0;
+
+    &-icon{
+      margin-right: 0.5rem;
+      fill: white;
+      height: 25px;
+      width: 25px;
+    }
+  }
+
+  &__album{
+    $size: 220px;
+    width: $size;
+    height: $size;
+    filter: grayscale(100%);
+  }
+
+  &__title{
+    font-size: 1.6rem;
+    text-align: center;
+    font-weight: 200;
+  }
+
+  &__artists{
+    margin-top: 0.4rem;
+    text-align: center;
+  }
+
+  &__player{
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+  }
+
+  &__icon{
+    width: 3rem;
+    height: 3rem;
+    fill: white;
+  }
+
+  & button{
+    background: none;
+    border: none;
+  }
+}
+
