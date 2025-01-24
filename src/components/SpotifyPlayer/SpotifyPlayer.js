@@ -126,7 +126,7 @@ const SpotifyPlayer = () => {
     useEffect(() => {
         if (session) {
             fetchCurrentTrack(); // Odśwież na start
-            session ? fetchUserProfile() : null;
+            isPlaying ? fetchUserProfile() : null;
             // Automatyczne odświeżanie co 5 sekund
             const interval = setInterval(() => {
                 fetchCurrentTrack();
@@ -138,18 +138,28 @@ const SpotifyPlayer = () => {
 
     if (!session) {
         return (
-            <div>
+            <div className="spotifyPlayer__err">
+
+                <button onClick={() => signIn('spotify')}>
+                    <p>Log in</p>
+                    <SpotifyIcon className="spotifyPlayer__err__icon"/>
+                </button>
                 <p>You are not logged in. Please log in with Spotify to use the player.</p>
-                <button onClick={() => signIn('spotify')}>Log in with Spotify</button>
+
             </div>
         );
     }
 
     if (!currentTrack) {
         return (
-            <div>
+            <div className="spotifyPlayer__err">
+
+                <button onClick={() => signOut()}>
+                    <p>Log out</p>
+                    <SpotifyIcon className="spotifyPlayer__err__icon"/>
+                </button>
                 <p>No track is currently playing.</p>
-                <button onClick={() => signOut()}>Log out</button>
+
             </div>
         );
     }

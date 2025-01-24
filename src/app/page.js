@@ -2,9 +2,9 @@
 
 import { useEffect } from "react";
 import SpotifyPlayer from "@/components/SpotifyPlayer/SpotifyPlayer";
-import YeelightController from "@/components/YeelightController/YeelightController";
 import WeatherWidget from "@/components/WeatherWidget/WeatherWidget";
 import SensorData from "@/components/SensorData/SensorData";
+import BedsideLampController from "@/components/YeelightController/BedsideLampController/BedsideLampController";
 import "@/styles/homePage.scss";
 
 export default function Home() {
@@ -34,13 +34,22 @@ export default function Home() {
         }
     }, []);
 
+    // useEffect(() => {
+    //     fetchInitialState();
+    //     const interval = setInterval(() => {
+    //         fetchInitialState();
+    //     }, 60000); // Co 10 sekund
+    //
+    //     return () => clearInterval(interval); // Czyszczenie interwału przy odmontowaniu
+    // }, []);
+
     return (
         <main className="home-page">
             <div className="home-page__spotify">
                 <SpotifyPlayer/>
             </div>
             <div className="home-page__bedside-lamp">
-                obsluga lampy
+                <BedsideLampController displayInformation={false} LAMP_IP="192.168.0.185"/>
             </div>
             <div className="home-page__temperatura home-page__temperatura--sensor">
                 <SensorData/>
@@ -48,7 +57,6 @@ export default function Home() {
             <div className="home-page__temperatura home-page__temperatura--api">
                 <WeatherWidget/>
             </div>
-            {/*<YeelightController />*/}
         </main>
     );
 }
