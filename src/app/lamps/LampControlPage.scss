@@ -1,0 +1,67 @@
+.LampControlPanel {
+  width: 100%;
+  margin-top: 100px;
+  padding-bottom: 80px;
+  height: calc(100vh - 100px);
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  color: white;
+
+
+  &__lamp {
+    background: #ffa502;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 350px;
+
+    & > button {
+      background: none;
+      border: none;
+    }
+
+    &--bedside {
+
+    }
+
+    &--ceiling {
+
+    }
+  }
+
+  &__button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &__icon{
+      $size: 10rem;
+      width: $size;
+      height: $size;
+      fill: white;
+
+      &--on{
+        fill: white;
+      }
+      &--off{
+        fill: #ffd084;
+      }
+    }
+
+    &--settings{
+      margin-top: 10px;
+      background: #ffd084;
+      padding: .5rem 1.5rem;
+    }
+  }
+
+}
+
+
+

@@ -22,7 +22,7 @@ export default function Header() {
                 <Link href="/">
                     <HomeIcon className="Header__icon"/>
                 </Link>
-                <Link href="/university">
+                <Link href="/lamps">
                     Oświetlenie
                 </Link>
                 <Link href="/university">
