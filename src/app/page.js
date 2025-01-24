@@ -34,13 +34,22 @@ export default function Home() {
         }
     }, []);
 
+    // useEffect(() => {
+    //     fetchInitialState();
+    //     const interval = setInterval(() => {
+    //         fetchInitialState();
+    //     }, 60000); // Co 10 sekund
+    //
+    //     return () => clearInterval(interval); // Czyszczenie interwału przy odmontowaniu
+    // }, []);
+
     return (
         <main className="home-page">
             <div className="home-page__spotify">
                 <SpotifyPlayer/>
             </div>
             <div className="home-page__bedside-lamp">
-                <BedsideLampController/>
+                <BedsideLampController displayInformation={false} LAMP_IP="192.168.0.185"/>
             </div>
             <div className="home-page__temperatura home-page__temperatura--sensor">
                 <SensorData/>

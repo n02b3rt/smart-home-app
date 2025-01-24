@@ -1,45 +1,52 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./BedsideLampController.scss"; // Stylizacja komponentu
-import LampIcon from "/public/icons/light.svg"; // Ikona lampy
+import LampIcon from "/public/icons/floor_lamp.svg";
+import Link from "next/link"; // Ikona lampy
 
-const BedsideLampController = () => {
-    const LAMP_IP = "192.168.0.185"; // Adres IP lampy
+const BedsideLampController = ({displayInformation = true, LAMP_IP}) => {
     const [isOn, setIsOn] = useState(false); // Stan lampy
     const [brightness, setBrightness] = useState(50); // Jasność lampy
     const [loading, setLoading] = useState(false); // Flaga ładowania
     const [debounceTimer, setDebounceTimer] = useState(null); // Timer dla debouncingu
 
+    const LAMP_NAME = "Lampka nocna"; // Nazwa lampy
+    const ROOM_NAME = "Biuro / Sypialnia"; // Nazwa pokoju
+
     // Pobieranie początkowego stanu lampy
-    useEffect(() => {
-        const fetchInitialState = async () => {
-            try {
-                const response = await fetch("/api/yeelight/getState", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ host: LAMP_IP }),
-                });
+    const fetchInitialState = async () => {
+        try {
+            const response = await fetch("/api/yeelight/getState", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({host: LAMP_IP}),
+            });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                if (data.status) {
-                    setIsOn(data.isOn ?? false); // Bezpieczna obsługa wartości null/undefined
-                    setBrightness(data.brightness ?? 50); // Ustaw domyślną jasność na 50
-                } else {
-                    console.warn("Nie udało się pobrać danych o stanie lampy:", data.error);
-                }
-            } catch (error) {
-                console.error("Błąd podczas pobierania początkowego stanu lampy:", error.message);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        };
 
+            const data = await response.json();
+            if (data.status) {
+                setIsOn(data.isOn ?? false); // Bezpieczna obsługa wartości null/undefined
+                setBrightness(data.brightness ?? 50); // Ustaw domyślną jasność na 50
+            } else {
+                console.warn("Nie udało się pobrać danych o stanie lampy:", data.error);
+            }
+        } catch (error) {
+            console.error("Błąd podczas pobierania początkowego stanu lampy:", error.message);
+        }
+    };
+
+    useEffect(() => {
         fetchInitialState();
-    }, [LAMP_IP]); // Dodanie zależności dla LAMP_IP
+        const interval = setInterval(() => {
+            fetchInitialState();
+        }, 10000); // Co 10 sekund
 
+        return () => clearInterval(interval); // Czyszczenie interwału przy odmontowaniu
+    }, []);
 
     // Funkcja do włączania/wyłączania lampy
     const toggleLamp = async () => {
@@ -49,8 +56,8 @@ const BedsideLampController = () => {
 
             const response = await fetch("/api/yeelight", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action, host: LAMP_IP }),
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({action, host: LAMP_IP}),
             });
 
             const data = await response.json();
@@ -77,7 +84,7 @@ const BedsideLampController = () => {
             try {
                 const response = await fetch("/api/yeelight/setBrightness", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {"Content-Type": "application/json"},
                     body: JSON.stringify({
                         host: LAMP_IP,
                         brightness: parseInt(value, 10), // Jasność musi być liczbą
@@ -91,46 +98,88 @@ const BedsideLampController = () => {
             } catch (error) {
                 console.error("Błąd podczas ustawiania jasności:", error);
             }
-        }, 50); // Opóźnienie 500 ms
+        }, 500); // Opóźnienie 500 ms
 
         setDebounceTimer(timer);
     };
 
+    const navigateTo = () => {
+        if (router && router.push) {
+            router.push(`/lamps/${LAMP_IP}`); // Przejście do dynamicznej strony
+        } else {
+            console.error("Router nie jest dostępny.");
+        }
+    };
+
     return (
-        <div
-            className={`BedsideLampController ${
-                isOn ? "BedsideLampController--on" : "BedsideLampController--off"
-            }`}
-        >
+        <div className="BedsideLampController">
             {!isOn ? (
                 <button
-                    className="BedsideLampController__button"
                     onClick={toggleLamp}
-                    disabled={loading}
+                    className="BedsideLampController__button"
                 >
-                    <img
-                        src={LampIcon}
-                        alt="Lamp Icon"
-                        className="BedsideLampController__icon"
-                    />
+                    {displayInformation ?
+                        <p className="BedsideLampController__info--off">{isOn ? "ON" : "OFF"}</p>
+                        :
+                        <div className="BedsideLampController__info">
+                            <><LampIcon className="BedsideLampController__icon"/>
+                                <p className="BedsideLampController__info__brightness">
+                                    {isOn ? "ON" : "OFF"} : {brightness}%
+                                </p>
+                                <div className="BedsideLampController__info__details">
+                                    <p className="BedsideLampController__info__name">
+                                        <strong>{LAMP_NAME}</strong>
+                                    </p>
+                                    <p className="BedsideLampController__info__room">{ROOM_NAME}</p>
+                                </div>
+                            </>
+
+                        </div>
+                    }
                 </button>
             ) : (
-                <div className="CustomRangeContainer">
-                    <div
-                        className="CustomRange"
-                        style={{width: `${brightness}%`}} // Szerokość zależna od wartości
-                    ></div>
-                    <input
-                        type="range"
-                        min="1"
-                        max="100"
-                        value={brightness}
-                        onChange={(e) => handleBrightnessChange(e.target.value)}
-                        className="CustomRangeInput"
-                    />
-                </div>
-
-
+                <>
+                    {displayInformation ?
+                        <p className="BedsideLampController__info--on">
+                            {isOn ? "ON" : "OFF"} : {brightness}%
+                        </p>
+                        :
+                        <div className="BedsideLampController__info">
+                            <LampIcon className="BedsideLampController__icon"/>
+                            <p className="BedsideLampController__info__brightness">
+                                {isOn ? "ON" : "OFF"} : {brightness}%
+                            </p>
+                            <div className="BedsideLampController__info__details">
+                                <p className="BedsideLampController__info__name">
+                                    <strong>{LAMP_NAME}</strong>
+                                </p>
+                                <p className="BedsideLampController__info__room">{ROOM_NAME}</p>
+                            </div>
+                        </div>
+                    }
+                    <div className="CustomRangeContainer">
+                        <div
+                            className="CustomRange"
+                            style={{width: `${brightness}%`}} // Szerokość zależna od wartości
+                        ></div>
+                        <input
+                            type="range"
+                            min="1"
+                            max="100"
+                            value={brightness}
+                            onChange={(e) => handleBrightnessChange(e.target.value)}
+                            className="CustomRangeInput"
+                        />
+                    </div>
+                    {displayInformation ? "" :
+                        <Link href={`/lamps/${LAMP_IP}`} className="BedsideLampController__settings"
+                              onClick={navigateTo}>
+                            <p>.</p>
+                            <p>.</p>
+                            <p>.</p>
+                        </Link>
+                    }
+                </>
             )}
         </div>
     );

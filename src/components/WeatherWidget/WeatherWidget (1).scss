@@ -1,0 +1,16 @@
+@import '../SensorAndWeatherOverview';
+.WeatherWidget{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: $component-width;
+  &__title{
+    font-size: $title-font-size;
+  }
+  &__temperature{
+    font-size: 3.5rem
+  }
+  &__humidity{
+    font-size: $humidity-font-size;
+  }
+}

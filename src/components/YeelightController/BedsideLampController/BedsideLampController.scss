@@ -1,33 +1,24 @@
 .BedsideLampController {
   width: 100%;
   height: 100%;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: background-color 0.3s ease-in-out;
-
-  &--on {
-    background-color: #f5f5f5; // Tło dla włączonej lampy
-  }
-
-  &--off {
-    background-color: #333; // Tło dla wyłączonej lampy
-  }
+  overflow: hidden;
 
   &__button {
     width: 100%;
     height: 100%;
     border: none;
-    background: none;
+    background: #fcf7e1CC;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: transform 0.3s ease;
-
-    &:hover {
-      transform: scale(1.05);
-    }
+    border-radius: 15px;
 
     &:disabled {
       cursor: not-allowed;
@@ -36,8 +27,65 @@
   }
 
   &__icon {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
+    fill: #bbac86;
+  }
+
+  &__info{
+    color: #bbac86;
+    position: absolute;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    row-gap: 1rem;
+    z-index: 2;
+    top: 1rem;
+    left: 1rem;
+    font-family: inherit;
+
+    &--off{
+      position: absolute;
+      top:50%;
+      left:50%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      color: rgba(51, 51, 51, 0.6);
+    }
+
+    &--on{
+      position: absolute;
+      top:50%;
+      left:50%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      color: rgba(51, 51, 51, 0.6);
+      z-index: 20;
+    }
+
+    &__brightness{
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    &__name{
+      color: #535353;
+      font-weight: 700;
+      font-size: 1.4rem;
+    }
+
+    &__room{
+      color: #777777;
+    }
+  }
+
+  &__settings{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1rem 1.5rem;
+    font-size: 3rem;
+    line-height: 0.5rem;
+    color: #777777;
   }
 
   &__slider {
@@ -67,7 +115,7 @@
   position: relative;
   width: 100%; /* Pełna szerokość kontenera */
   height: 100%; /* Pełna wysokość kontenera */
-  background: #ddd; /* Kolor tła dla nieprzesuniętej części */
+  background: #fdfaf3; /* Kolor tła dla nieprzesuniętej części */
   border-radius: 10px; /* Zaokrąglenie kontenera */
   overflow: hidden; /* Ukrycie nadmiaru zawartości */
 }
@@ -77,8 +125,9 @@
   top: 0;
   left: 0;
   height: 100%;
-  background: #fdcb6e; /* Kolor przesuniętej części */
+  background: #fcf7e1CC; /* Kolor przesuniętej części */
   transition: width 0.1s ease; /* Animacja podczas zmiany wartości */
+  border-right: 2px solid #bbac86;;
   border-radius: 10px; /* Zaokrąglenie przesuniętej części */
 }
 
