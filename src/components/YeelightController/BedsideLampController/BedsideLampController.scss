@@ -1,0 +1,94 @@
+.BedsideLampController {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease-in-out;
+
+  &--on {
+    background-color: #f5f5f5; // Tło dla włączonej lampy
+  }
+
+  &--off {
+    background-color: #333; // Tło dla wyłączonej lampy
+  }
+
+  &__button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  &__icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  &__slider {
+    width: 100%;
+    height: 100%;
+    appearance: none;
+    background: none;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background-color: #000;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    &::-webkit-slider-runnable-track {
+      height: 5px;
+      background: #ddd;
+    }
+  }
+}
+
+
+.CustomRangeContainer {
+  position: relative;
+  width: 100%; /* Pełna szerokość kontenera */
+  height: 100%; /* Pełna wysokość kontenera */
+  background: #ddd; /* Kolor tła dla nieprzesuniętej części */
+  border-radius: 10px; /* Zaokrąglenie kontenera */
+  overflow: hidden; /* Ukrycie nadmiaru zawartości */
+}
+
+.CustomRange {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #fdcb6e; /* Kolor przesuniętej części */
+  transition: width 0.1s ease; /* Animacja podczas zmiany wartości */
+  border-radius: 10px; /* Zaokrąglenie przesuniętej części */
+}
+
+.CustomRangeInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0; /* Ukrycie natywnego suwaka */
+  cursor: pointer; /* Dodanie wskaźnika kursora */
+}
+
