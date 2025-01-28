@@ -25,7 +25,7 @@ export default function Header() {
                 <Link href="/lamps">
                     Oświetlenie
                 </Link>
-                <Link href="/university">
+                <Link href="/pomodoro">
                     Pomodoro
                 </Link>
                 <Link href="/university">
